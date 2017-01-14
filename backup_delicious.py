@@ -24,9 +24,11 @@ import string
 from dateutil.parser import parse
 import time
 
-base_url = 'https://del.icio.us/paulantoine?&page='
+base_url = 'https://del.icio.us/'
 headers = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.90 Safari/537.36'}
-# replace username and userpassword...
+# fill username and userpassword...
+username =...
+userpassword = ...
 auth = (username,userpassword)
 bookmark_file_header = """<!DOCTYPE NETSCAPE-Bookmark-file-1>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
@@ -40,7 +42,7 @@ Do Not Edit! -->
 
 
 def print_links(page):
-	url = base_url + str(page)
+	url = base_url + username + '?&page='+ str(page)
 	r = requests.get(url, headers=headers, auth=auth)
 	c = r.content
 	soup = BeautifulSoup(c, "lxml")
@@ -53,8 +55,6 @@ def print_links(page):
 		position = date_string.rfind("paulantoine")
 		link_date_string = date_string[position+14:]
 		link_date = str(int(parse(link_date_string).timestamp()))
-	
-	
 	
 		div_descr = div.find("div", "thumbTBriefTxt")
 
