@@ -26,9 +26,11 @@ import time
 
 base_url = 'https://del.icio.us/'
 headers = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.90 Safari/537.36'}
+
 # fill username and userpassword...
 username =...
 userpassword = ...
+
 auth = (username,userpassword)
 bookmark_file_header = """<!DOCTYPE NETSCAPE-Bookmark-file-1>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
@@ -73,9 +75,17 @@ def print_links(page):
 		if link_comment != "" :
 			print('<DD>'+link_comment)
 		
+def lastpage():
+	url = base_url + username
+	r = requests.get(url, headers=headers, auth=auth)
+	c = r.content
+	soup = BeautifulSoup(c, "lxml")
+	pagination = soup.find("ul","pagination")
+	lastpage = pagination.find_all("li")[-2].get_text()
+	return int(lastpage)
 
 print(bookmark_file_header)
-for p in range(1,276):
+for p in range(1,lastpage()):
 	print_links(p)
 	time.sleep(1)
 print("</DL><p>")
