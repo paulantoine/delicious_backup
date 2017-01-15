@@ -25,6 +25,7 @@ from dateutil.parser import parse
 import time
 
 base_url = 'https://del.icio.us/'
+url_pagination = '?&page='
 headers = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.90 Safari/537.36'}
 
 # fill username and userpassword...
@@ -44,7 +45,7 @@ Do Not Edit! -->
 
 
 def print_links(page):
-	url = base_url + username + '?&page='+ str(page)
+	url = base_url + username + url_pagination + str(page)
 	r = requests.get(url, headers=headers, auth=auth)
 	c = r.content
 	soup = BeautifulSoup(c, "lxml")
@@ -81,8 +82,7 @@ def lastpage():
 	c = r.content
 	soup = BeautifulSoup(c, "lxml")
 	pagination = soup.find("ul","pagination")
-	lastpage = pagination.find_all("li")[-2].get_text()
-	return int(lastpage)
+	return int(pagination.find_all("li")[-2].get_text())
 
 print(bookmark_file_header)
 for p in range(1,lastpage()):
